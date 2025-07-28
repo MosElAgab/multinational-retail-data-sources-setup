@@ -5,7 +5,7 @@ import pandas as pd
 RDS_USER = "retail_admin"
 RDS_PASSWORD = "retail_admin_1234"
 RDS_HOST= "multinational-retail.c7kegm862wks.eu-west-2.rds.amazonaws.com"
-RDS_DATABASE="postgres"
+RDS_DATABASE="retail"
 RDS_PORT="5432"
 
 def init_db_engine():
