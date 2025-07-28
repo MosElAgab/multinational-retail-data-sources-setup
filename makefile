@@ -2,7 +2,7 @@
 PROJECT_NAME = multinational-retail-data-sources-setup
 
 # Defined targets
-.PHONY: tarraform-init terraform-plan terraform-apply terraform-destroy, terraform-output
+.PHONY: tarraform-init terraform-plan terraform-apply terraform-destroy, terraform-output, terraform-format
 
 # 
 terraform-init:
@@ -23,3 +23,7 @@ terraform-destroy:
 # 
 terraform-output:
 	terraform -chdir=terraform output
+
+# 
+terraform-format:
+	terraform -chdir=terraform fmt

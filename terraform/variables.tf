@@ -13,19 +13,19 @@ variable "aws_profile" {
 variable "db_username" {
   description = "Username for the RDS PostgreSQL instance"
   type        = string
-  default = "postgres"
+  default     = "postgres"
 }
 
 
 variable "db_password" {
-    description = "User password for RDS PostgreSQL instance"
-    type = string
-    default = "postgres"
-    sensitive = true
+  description = "User password for RDS PostgreSQL instance"
+  type        = string
+  default     = "postgres"
+  sensitive   = true
 }
 
 variable "db_identifier" {
-    description = "Identifier name for the RDS instance"
-    type = string
-    default = "my_db"
+  description = "Identifier name for the RDS instance"
+  type        = string
+  default     = "mydb"
 }

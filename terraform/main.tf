@@ -1,5 +1,4 @@
 # Security group for PostgreSQL access
-
 resource "aws_security_group" "rds_sg" {
   name        = "rds-access"
   description = "Allow PostgreSQL access"
@@ -20,22 +19,23 @@ resource "aws_security_group" "rds_sg" {
   }
 }
 
+
 # RDS PostgreSQL instance
 resource "aws_db_instance" "rds_instance" {
-  engine             = "postgres"
-  engine_version     = "17.4"
-  identifier         = var.db_identifier
-  username           = var.db_username
-  password           = var.db_password
-  instance_class     = "db.t3.micro"
-  allocated_storage  = 5
-  storage_type      = "gp2"
-  network_type      = "IPV4"
-  publicly_accessible = true
-  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+  engine                   = "postgres"
+  engine_version           = "17.4"
+  identifier               = var.db_identifier
+  username                 = var.db_username
+  password                 = var.db_password
+  instance_class           = "db.t3.micro"
+  allocated_storage        = 5
+  storage_type             = "gp2"
+  network_type             = "IPV4"
+  publicly_accessible      = true
+  vpc_security_group_ids   = [aws_security_group.rds_sg.id]
   delete_automated_backups = true
-  skip_final_snapshot = true
+  skip_final_snapshot      = true
 
-  db_name               = "retail"
-  port               = 5432
+  db_name = "retail"
+  port    = 5432
 }
