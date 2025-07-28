@@ -1,6 +1,7 @@
 # Project configuration
 PROJECT_NAME = multinational-retail-data-sources-setup
-TF_ENV = dev.tfvars
+ENV ?= dev
+TF_ENV = $(ENV).tfvars
 
 # Defined targets
 .PHONY: terraform-init terraform-plan terraform-apply terraform-destroy terraform-output terraform-format
