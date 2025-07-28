@@ -29,3 +29,9 @@ variable "db_identifier" {
   type        = string
   default     = "mydb"
 }
+
+variable "db_name" {
+  description = "Database name for the RDS instance db created at launch"
+  type        = string
+  default     = "mydb"
+}

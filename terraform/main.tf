@@ -36,6 +36,6 @@ resource "aws_db_instance" "rds_instance" {
   delete_automated_backups = true
   skip_final_snapshot      = true
 
-  db_name = "retail"
+  db_name = var.db_name
   port    = 5432
 }
