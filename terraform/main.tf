@@ -24,9 +24,9 @@ resource "aws_security_group" "rds_sg" {
 resource "aws_db_instance" "rds_instance" {
   engine             = "postgres"
   engine_version     = "17.4"
-  identifier         = "multinational-retail"
-  username           = "retail_admin"
-  password           = "retail_admin_1234"
+  identifier         = var.db_identifier
+  username           = var.db_username
+  password           = var.db_password
   instance_class     = "db.t3.micro"
   allocated_storage  = 5
   storage_type      = "gp2"
