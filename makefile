@@ -27,3 +27,6 @@ terraform-output:
 # 
 terraform-format:
 	terraform -chdir=terraform fmt
+
+
+# terraform plan -chdir=terraform -var-file="dev.tfvars"
