@@ -24,7 +24,7 @@ variable "db_password" {
   sensitive   = true
 }
 
-variable "db_identifier" {
+variable "rds_identifier" {
   description = "Identifier name for the RDS instance"
   type        = string
   default     = "mydb"

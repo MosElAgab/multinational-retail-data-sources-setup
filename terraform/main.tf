@@ -24,7 +24,7 @@ resource "aws_security_group" "rds_sg" {
 resource "aws_db_instance" "rds_instance" {
   engine                   = "postgres"
   engine_version           = "17.4"
-  identifier               = var.db_identifier
+  identifier               = var.rds_identifier
   username                 = var.db_username
   password                 = var.db_password
   instance_class           = "db.t3.micro"
