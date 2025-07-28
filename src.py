@@ -1,12 +1,15 @@
+import os
 from sqlalchemy import create_engine, URL
 import pandas as pd
+from dotenv import load_dotenv
 
+load_dotenv()
 
-RDS_USER = "retail_admin"
-RDS_PASSWORD = "retail_admin_1234"
-RDS_HOST= "multinational-retail.c7kegm862wks.eu-west-2.rds.amazonaws.com"
-RDS_DATABASE="retail"
-RDS_PORT="5432"
+RDS_USER = os.getenv("RDS_USER")
+RDS_PASSWORD = os.getenv("RDS_PASSWORD")
+RDS_HOST = os.getenv("RDS_HOST")
+RDS_DATABASE = os.getenv("RDS_DATABASE")
+RDS_PORT = os.getenv("RDS_PORT")
 
 def init_db_engine():
     """
