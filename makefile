@@ -1,24 +1,24 @@
 # Project configuration
 PROJECT_NAME = multinational-retail-data-sources-setup
+TF_ENV = dev.tfvars
 
 # Defined targets
-.PHONY: tarraform-init terraform-plan terraform-apply terraform-destroy, terraform-output, terraform-format
-
+.PHONY: terraform-init terraform-plan terraform-apply terraform-destroy terraform-output terraform-format
 # 
 terraform-init:
 	terraform -chdir=terraform init
 
 # 
 terraform-plan:
-	terraform -chdir=terraform plan
+	terraform -chdir=terraform plan -var-file="$(TF_ENV)"
 
 # 
 terraform-apply:
-	terraform -chdir=terraform apply
+	terraform -chdir=terraform apply -var-file="$(TF_ENV)"
 
 # 
 terraform-destroy:
-	terraform -chdir=terraform destroy
+	terraform -chdir=terraform destroy -var-file="$(TF_ENV)"
 
 # 
 terraform-output:
@@ -29,4 +29,4 @@ terraform-format:
 	terraform -chdir=terraform fmt
 
 
-# terraform plan -chdir=terraform -var-file="dev.tfvars"
+# terraform apply -chdir=terraform -var-file="dev.tfvars"
