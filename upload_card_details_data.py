@@ -43,16 +43,14 @@ def upload_file(file_name, bucket, object_name=None, aws_cli_profile=None):
     # configuring aws cli profile
     if aws_cli_profile is None:
         try:
-            # s3_client = boto3.client('s3')
-            s3_client = boto3.client('s3', region_name="eu-west-2")
+            s3_client = boto3.client('s3')
         except ClientError as e:
             print(e)
             return False
     else:
         try:
             session = boto3.Session(profile_name=aws_cli_profile)
-            # s3_client = session.client("s3")
-            s3_client = session.client("s3", region_name="eu-west-2")
+            s3_client = session.client("s3")
         except ClientError as e:
             print(e)
             return False
@@ -80,10 +78,7 @@ def create_presigned_url(bucket_name, object_name, expiration=3600):
     """
 
     # Generate a presigned URL for the S3 object
-    # s3_client = boto3.client('s3')
-    # s3_client = boto3.client('s3', region_name="eu-west-2")
-    session = boto3.Session(profile_name="mos")
-    s3_client = session.client("s3", region_name="eu-west-2")
+    s3_client = boto3.client('s3')
     try:
         response = s3_client.generate_presigned_url(
             'get_object',
