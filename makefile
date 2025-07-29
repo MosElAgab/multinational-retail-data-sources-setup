@@ -31,3 +31,4 @@ terraform-format:
 
 
 # terraform apply -chdir=terraform -var-file="dev.tfvars"
+# terraform output -json > data_sources_outputs.json
