@@ -37,7 +37,7 @@ def create_bucket(bucket_name, region="us-east-1", aws_cli_profile=None):
 
 def upload_file(file_name, bucket, object_name=None, aws_cli_profile=None):
     # If S3 object_name was not specified, use file_name
-    # we dont need region since bucket name is unique
+    # CEHCK: we dont need region since bucket name is unique
     if object_name is None:
         object_name = os.path.basename(file_name)
 
@@ -113,20 +113,19 @@ def generate_presigned_get_url(
     return url
 
 
-# # --- Config ---
+# # --- Config/Params ---
 bucket_name = "data-handling-public-moselagab"
 region = "eu-west-2"
-object_key = "card_details.pdf"
 file_name = "data/card_details.pdf"
 aws_cli_profile=os.getenv("AWS_CLI_PROFILE")
 object_name = os.path.basename(file_name)
-
+expires_in=3600 * 24 * 7 # 7 day
 
 create_bucket(bucket_name, region, aws_cli_profile)
 upload_file(file_name, bucket_name, aws_cli_profile=aws_cli_profile)
 
 url = generate_presigned_get_url(
-    expires_in=3600 * 24 * 7,
+    expires_in=expires_in,
     aws_cli_profile=aws_cli_profile,
     region=region,
     bucket_name=bucket_name,
@@ -134,6 +133,9 @@ url = generate_presigned_get_url(
 )
 
 
+# check url
 response = requests.get(url)
-print(response.status_code)
-print(response.json)
+if response.ok:
+    print(f"URL working; response_status: {response.status_code}, file_type: {response.headers['Content-Type']}")
+else:
+    print(f"URL NOT working; response_status: {response.status_code}, body: {response.json}")
