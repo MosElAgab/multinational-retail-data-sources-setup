@@ -36,19 +36,23 @@ class DatabaseConnector():
         engine = create_engine(url_object)
         return engine
 
-connecter = DatabaseConnector()
+def main():
+    connecter = DatabaseConnector()
 
-csv_file = "./data/legacy_users.csv"
-df = pd.read_csv(csv_file, index_col=False)
-df.drop(columns=["Unnamed: 0"], inplace=True)
-df.info()
+    csv_file = "./data/legacy_users.csv"
+    df = pd.read_csv(csv_file, index_col=False)
+    df.drop(columns=["Unnamed: 0"], inplace=True)
+    df.info()
 
-engine = connecter.init_rds_db_engine()
-table_name = "legacy_users"
-df.to_sql(
-            name=table_name,
-            con=engine,
-            if_exists="replace",
-            index=False
-        )
-print(f"Uploading {df.shape[0]} records to RDS table '{table_name}'...")
+    engine = connecter.init_rds_db_engine()
+    table_name = "legacy_users"
+    df.to_sql(
+                name=table_name,
+                con=engine,
+                if_exists="replace",
+                index=False
+            )
+    print(f"Uploading {df.shape[0]} records to RDS table '{table_name}'...")
+
+if __name__ == "__main__":
+    main()
