@@ -12,7 +12,7 @@ class DatabaseConnector():
 
     def init_rds_db_engine(self):
         """
-        Initialize a SQLAlchemy database engine for AWS RDS based on provided credentials.
+        Initialize a SQLAlchemy database engine for PSQL AWS RDS based on provided credentials.
 
         Returns:
             Engine: SQLAlchemy engine object.
