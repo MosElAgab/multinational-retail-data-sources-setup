@@ -9,7 +9,11 @@ import requests
 load_dotenv()
 
 # utils
-def create_bucket(bucket_name, region="us-east-1", aws_cli_profile=None):
+def create_bucket(
+        bucket_name: str,
+        region: str = "us-east-1",
+        aws_cli_profile: str = None
+):
     """
     Create an S3 bucket in the specified region using an optional AWS CLI profile.
 
@@ -47,7 +51,12 @@ def create_bucket(bucket_name, region="us-east-1", aws_cli_profile=None):
     return True
 
 
-def upload_file(file_name, bucket, object_name=None, aws_cli_profile=None):
+def upload_file(
+        file_name: str,
+        bucket: str,
+        object_name: str = None,
+        aws_cli_profile: str = None
+):
     """
     Upload a file to an S3 bucket.
 
