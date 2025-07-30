@@ -37,6 +37,7 @@ def create_bucket(bucket_name, region="us-east-1", aws_cli_profile=None):
 
 def upload_file(file_name, bucket, object_name=None, aws_cli_profile=None):
     # If S3 object_name was not specified, use file_name
+    # we dont need region since bucket name is unique
     if object_name is None:
         object_name = os.path.basename(file_name)
 
@@ -65,48 +66,74 @@ def upload_file(file_name, bucket, object_name=None, aws_cli_profile=None):
     return True
 
 
-
-
-
-def create_presigned_url(bucket_name, object_name, expiration=3600):
-    """Generate a presigned URL to share an S3 object
-
-    :param bucket_name: string
-    :param object_name: string
-    :param expiration: Time in seconds for the presigned URL to remain valid
-    :return: Presigned URL as string. If error, returns None.
+def generate_presigned_get_url(
+        expires_in: int,
+        region: str,
+        bucket_name: str,
+        object_name: str,
+        aws_cli_profile: str = None
+):
     """
+    Generate a presigned Amazon S3 Get URL that can be used to perform an action.
+    
+    :param expires_in: The number of seconds the presigned URL is valid for.
+    :param client_method: The name of the client method that the URL performs.
+    :param method_parameters: The parameters of the specified client method.
+    :return: The presigned URL.
+    """
+    client_method="get_object"
 
-    # Generate a presigned URL for the S3 object
-    s3_client = boto3.client('s3')
+    # configuring aws cli profile
+    if aws_cli_profile is None:
+        try:
+            s3_client = boto3.client('s3', region_name=region)
+        except ClientError as e:
+            print(e)
+            return None
+    else:
+        try:
+            session = boto3.Session(profile_name=aws_cli_profile)
+            s3_client = session.client("s3", region_name=region)
+        except ClientError as e:
+            print(e)
+            return None
+
+    method_parameters = {"Bucket": bucket_name, "Key": object_name}
     try:
-        response = s3_client.generate_presigned_url(
-            'get_object',
-            Params={'Bucket': bucket_name, 'Key': object_name},
-            ExpiresIn=expiration,
+        url = s3_client.generate_presigned_url(
+            ClientMethod=client_method,
+            Params=method_parameters,
+            ExpiresIn=expires_in
         )
-    except ClientError as e:
-        print(e)
-        return None
+    except ClientError:
+        print(f"Couldn't get a presigned URL for client method '{client_method}'.")
+        raise
+    print("url:")
+    print(url)
+    return url
 
-    # The response contains the presigned URL
-    return response
 
-# --- Config ---
+# # --- Config ---
 bucket_name = "data-handling-public-moselagab"
 region = "eu-west-2"
 object_key = "card_details.pdf"
 file_name = "data/card_details.pdf"
 aws_cli_profile=os.getenv("AWS_CLI_PROFILE")
+object_name = os.path.basename(file_name)
+
 
 create_bucket(bucket_name, region, aws_cli_profile)
 upload_file(file_name, bucket_name, aws_cli_profile=aws_cli_profile)
 
-object_name = os.path.basename(file_name)
-url = create_presigned_url(bucket_name,object_name)
-print(url)
+url = generate_presigned_get_url(
+    expires_in=3600 * 24 * 7,
+    aws_cli_profile=aws_cli_profile,
+    region=region,
+    bucket_name=bucket_name,
+    object_name=object_name
+)
 
-# FIXME: pre-signed url not workign, gives 403 forbidden
+
 response = requests.get(url)
 print(response.status_code)
 print(response.json)
