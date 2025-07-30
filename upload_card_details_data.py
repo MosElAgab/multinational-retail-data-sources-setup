@@ -10,6 +10,18 @@ load_dotenv()
 
 # utils
 def create_bucket(bucket_name, region="us-east-1", aws_cli_profile=None):
+    """
+    Create an S3 bucket in the specified region using an optional AWS CLI profile.
+
+    Args:
+        bucket_name (str): Name of the S3 bucket to create.
+        region (str): AWS region where the bucket will be created.
+        aws_cli_profile (str, optional): Named AWS CLI profile to use. Defaults to None.
+
+    Returns:
+        bool: True if bucket creation succeeds or already exists; False on error.
+    """
+
     # configuring aws cli profile
     if aws_cli_profile is None:
         try:
@@ -36,11 +48,22 @@ def create_bucket(bucket_name, region="us-east-1", aws_cli_profile=None):
 
 
 def upload_file(file_name, bucket, object_name=None, aws_cli_profile=None):
-    # If S3 object_name was not specified, use file_name
-    # CEHCK: we dont need region since bucket name is unique
-    if object_name is None:
-        object_name = os.path.basename(file_name)
+    """
+    Upload a file to an S3 bucket.
 
+    Args:
+        file_name (str): Local path to the file.
+        bucket (str): Target S3 bucket name.
+        object_name (str, optional): Key (name) to assign in S3. Defaults to file basename.
+        aws_cli_profile (str, optional): Named AWS CLI profile. Defaults to None.
+
+    Returns:
+        bool: True if upload succeeds, False otherwise.
+    """
+
+    object_name = object_name or os.path.basename(file_name)
+
+    # TODO: check if need region but i guess we dont need it since bucket name is unique
     # configuring aws cli profile
     if aws_cli_profile is None:
         try:
@@ -74,12 +97,17 @@ def generate_presigned_get_url(
         aws_cli_profile: str = None
 ):
     """
-    Generate a presigned Amazon S3 Get URL that can be used to perform an action.
-    
-    :param expires_in: The number of seconds the presigned URL is valid for.
-    :param client_method: The name of the client method that the URL performs.
-    :param method_parameters: The parameters of the specified client method.
-    :return: The presigned URL.
+    Generate a presigned GET URL for an S3 object.
+
+    Args:
+        expires_in (int): Expiration time in seconds.
+        region (str): AWS region of the bucket.
+        bucket_name (str): S3 bucket name.
+        object_name (str): Key of the object to generate the URL for.
+        aws_cli_profile (str, optional): Named AWS CLI profile. Defaults to None which uses default aws cli profile.
+
+    Returns:
+        str: Presigned URL as a string if successful, None otherwise.
     """
     client_method="get_object"
 
@@ -113,29 +141,33 @@ def generate_presigned_get_url(
     return url
 
 
-# # --- Config/Params ---
-bucket_name = "data-handling-public-moselagab"
-region = "eu-west-2"
-file_name = "data/card_details.pdf"
-aws_cli_profile=os.getenv("AWS_CLI_PROFILE")
-object_name = os.path.basename(file_name)
-expires_in=3600 * 24 * 7 # 7 day
+def main():
+    # # --- Config/Params ---
+    bucket_name = "data-handling-public-moselagab"
+    region = "eu-west-2"
+    file_name = "data/card_details.pdf"
+    aws_cli_profile=os.getenv("AWS_CLI_PROFILE")
+    object_name = os.path.basename(file_name)
+    expires_in=3600 * 24 * 7 # 7 day
 
-create_bucket(bucket_name, region, aws_cli_profile)
-upload_file(file_name, bucket_name, aws_cli_profile=aws_cli_profile)
+    create_bucket(bucket_name, region, aws_cli_profile)
+    upload_file(file_name, bucket_name, aws_cli_profile=aws_cli_profile)
 
-url = generate_presigned_get_url(
-    expires_in=expires_in,
-    aws_cli_profile=aws_cli_profile,
-    region=region,
-    bucket_name=bucket_name,
-    object_name=object_name
-)
+    url = generate_presigned_get_url(
+        expires_in=expires_in,
+        aws_cli_profile=aws_cli_profile,
+        region=region,
+        bucket_name=bucket_name,
+        object_name=object_name
+    )
 
 
-# check url
-response = requests.get(url)
-if response.ok:
-    print(f"URL working; response_status: {response.status_code}, file_type: {response.headers['Content-Type']}")
-else:
-    print(f"URL NOT working; response_status: {response.status_code}, body: {response.json}")
+    # check url
+    response = requests.get(url)
+    if response.ok:
+        print(f"URL working; response_status: {response.status_code}, file_type: {response.headers['Content-Type']}")
+    else:
+        print(f"URL NOT working; response_status: {response.status_code}, body: {response.json}")
+
+if __name__ == "__main__":
+    main()
