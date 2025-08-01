@@ -38,4 +38,10 @@ resource "aws_db_instance" "rds_instance" {
 
   db_name = var.db_name
   port    = 5432
+
+  tags = {
+  Project = "multinational-retail"
+  Owner   = "Mostafa"
+}
+
 }
