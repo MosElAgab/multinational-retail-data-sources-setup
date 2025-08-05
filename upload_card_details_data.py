@@ -8,6 +8,7 @@ import requests
 load_dotenv()
 
 # utils
+#TODO: remove create bucket, not needed anymore
 def create_bucket(
         bucket_name: str,
         region: str = "us-east-1",
@@ -158,7 +159,7 @@ def main():
     object_name = os.path.basename(file_name)
     expires_in=3600 * 24 * 7 # 7 day
 
-    create_bucket(bucket_name, region, aws_cli_profile)
+    # create_bucket(bucket_name, region, aws_cli_profile)
     upload_file(file_name, bucket_name, aws_cli_profile=aws_cli_profile)
 
     url = generate_presigned_get_url(

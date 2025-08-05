@@ -45,3 +45,14 @@ resource "aws_db_instance" "rds_instance" {
 }
 
 }
+
+
+# S3 Bucket
+
+resource "aws_s3_bucket" "multinational_retail_bucket" {
+    bucket = var.s3_bucket_name
+    force_destroy = true
+    tags = {
+        Project = "multinational_retail_data_sources_setup"
+    }
+}

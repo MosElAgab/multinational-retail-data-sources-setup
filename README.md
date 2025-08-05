@@ -18,6 +18,8 @@ multinational-retail-data-sources
 
 # Next
 ## move s3 bucket createtion to terraform
+Easier teardown and management.
+
 ## develop api to inetract with store_data 
 this will involve: 
 - API gateway, s3 lambda and aws cloud watch for logging; 

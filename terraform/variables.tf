@@ -35,3 +35,8 @@ variable "db_name" {
   type        = string
   default     = "mydb"
 }
+
+variable "s3_bucket_name" {
+    type = string
+    description = "name of s3 bucket for storing project data on aws"
+}
