@@ -4,7 +4,11 @@ ENV ?= dev
 TF_ENV = $(ENV).tfvars
 
 # Defined targets
-.PHONY: terraform-init terraform-plan terraform-apply terraform-destroy terraform-output terraform-format
+.PHONY: test terraform-init terraform-plan terraform-apply terraform-destroy terraform-output terraform-format
+#
+test:
+	PYTHONPATH=$(shell pwd) pytest -v
+
 # 
 terraform-init:
 	terraform -chdir=terraform init

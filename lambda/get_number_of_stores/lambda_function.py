@@ -4,7 +4,7 @@ import json
 from dotenv import load_dotenv
 
 # load env for local development
-# load_dotenv()
+load_dotenv()
 
 def lambda_handler(event, context):
     bucket_name = os.getenv("BUCKET_NAME")
@@ -15,7 +15,3 @@ def lambda_handler(event, context):
             "statusCode": 500,
             "body": json.dumps({"message": "missing env variables: BUCKET_NAME or TORE_CSV_OBJECT_KEY"})
         }
-    
-# test
-response = lambda_handler({}, {})
-print(response)
