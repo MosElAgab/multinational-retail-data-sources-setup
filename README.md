@@ -9,16 +9,17 @@ multinational-retail-data-sources
 <!-- define password validation for variables.tf/db_password to enhance security -->
 <!-- for prodcution, consider using TF_VAR_db_password or AWS secret manager -->
 
+# commands work flow
+make terraform-apply -> python upload_user_data.py gives {RDS_HOSt}-> python upload_card_details_data.py gives {url} -> python upload_store_data.py
+
 # summary of work done
 - Makefile for terraform commands
 - terraform script to create rds with credential place in dev.tfvars; SG to allow access using creds defined; rds endpoint outputs on terminal
 - upload_user_data.py developed to connect to rds db created and uploads user data; it uses creds in .env
 - uploads_card_details_data.py developed to create s3 bucket, uploads card_details.pdf data; and generates pre-signed url for get request access; pre-signed url ouputs on terminal
 - upload_store_data developed to upload legacy_store.csv
+- moved s3 bucket creation to terraform for easier teardown and management
 
-# Next
-## move s3 bucket createtion to terraform
-Easier teardown and management.
 
 ## develop api to inetract with store_data 
 this will involve: 

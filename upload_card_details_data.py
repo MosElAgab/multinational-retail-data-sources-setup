@@ -8,7 +8,7 @@ import requests
 load_dotenv()
 
 # utils
-#TODO: remove create bucket, not needed anymore
+#TODO: remove create bucket, not needed anymore, Terraform employed to create bucket
 def create_bucket(
         bucket_name: str,
         region: str = "us-east-1",
