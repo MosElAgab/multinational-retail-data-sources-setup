@@ -56,4 +56,3 @@ def test_lambda_handler_failure(mock_count_stores, monkeypatch):
 
     body = json.loads(response["body"])
     assert body["message"] == "some error raised"
-
