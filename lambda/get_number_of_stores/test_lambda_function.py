@@ -1,5 +1,4 @@
 import json
-import pytest
 from lambda_function import lambda_handler, count_number_of_stores
 from unittest.mock import patch, MagicMock
 

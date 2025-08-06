@@ -36,3 +36,12 @@ terraform-format:
 
 # terraform apply -chdir=terraform -var-file="dev.tfvars"
 # terraform output -json > data_sources_outputs.json
+
+# install dependencies in local file
+# pip install -r requirements.txt -t .
+
+# zip everthinng indide lamda function folder
+# zip -r9 get_number_of_stores.zip . -x "*__pycache__*"
+
+# zip sepecific file
+# zip -r9 get_number_of_stores.zip lambda_function.py
