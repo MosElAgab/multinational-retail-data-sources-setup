@@ -58,7 +58,7 @@ def upload_file(
 def main():
     # # --- Config/Params ---
     bucket_name = "data-handling-public-moselagab"
-    file_name = "data/legacy_users.csv"
+    file_name = "data/legacy_store_details.csv"
     aws_cli_profile=os.getenv("AWS_CLI_PROFILE")
 
     upload_file(file_name, bucket_name, aws_cli_profile=aws_cli_profile)
