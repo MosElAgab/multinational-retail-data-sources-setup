@@ -56,3 +56,23 @@ resource "aws_s3_bucket" "multinational_retail_bucket" {
         Project = "multinational_retail_data_sources_setup"
     }
 }
+
+
+#lambda
+
+## role
+# refactor to use json file
+resource "aws_iam_role" "lambda_exec_role" {
+  name = "Store_data_inetraction_lambda_role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+      Statement = [{
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }]
+  })
+}
