@@ -60,7 +60,7 @@ resource "aws_s3_bucket" "multinational_retail_bucket" {
 
 #lambda
 
-## role
+## Iam role
 # refactor to use json file
 resource "aws_iam_role" "lambda_exec_role" {
   name = "Store_data_inetraction_lambda_role"
@@ -75,4 +75,17 @@ resource "aws_iam_role" "lambda_exec_role" {
         }
       }]
   })
+}
+
+## Attach plocies to role
+# allow cloud watch logs
+resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
+  role = aws_iam_role.lambda_exec_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+# allow s3 read only access
+resource "aws_iam_role_policy_attachment" "lambda_s3_read_access" {
+  role = aws_iam_role.lambda_exec_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
 }
