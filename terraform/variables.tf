@@ -45,3 +45,16 @@ variable "store_csv_object_key" {
   type = string
   description = "name of store csv file object stored in the s3"
 }
+
+
+variable "store_api_key_name" {
+  type = string
+  sensitive   = true
+  description = "aws api gateway api key name"
+}
+
+variable "store_api_key_value" {
+  type = string
+  sensitive   = true
+  description = "aws api gateway api key"
+}

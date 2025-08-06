@@ -137,6 +137,13 @@ resource "aws_api_gateway_method" "get_number_of_stores" {
   rest_api_id = aws_api_gateway_rest_api.store_api.id
   resource_id = aws_api_gateway_resource.number_of_stores.id
   http_method = "GET"
-  authorization = "None"
+  authorization = "NONE"
   api_key_required = true
+}
+
+## create api key
+resource "aws_api_gateway_api_key" "store_api_key" {
+  name = var.store_api_key_name
+  value = var.store_api_key_value
+  enabled = true
 }
