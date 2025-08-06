@@ -28,8 +28,14 @@ def lambda_handler(event, context):
             "body": json.dumps({"message": "missing env variables: BUCKET_NAME or TORE_CSV_OBJECT_KEY"})
         }
     
-    count = count_number_of_stores(bucket_name, object_key)
-    return {
-        "statusCode": 200,
-        "body": json.dumps({"number_stores": count})
-    }
+    try:
+        count = count_number_of_stores(bucket_name, object_key)
+        return {
+            "statusCode": 200,
+            "body": json.dumps({"number_stores": count})
+        }
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "body": json.dumps({"message": str(e)})
+        }

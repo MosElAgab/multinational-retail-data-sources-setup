@@ -1,4 +1,5 @@
 import json
+import pytest
 from lambda_function import lambda_handler, count_number_of_stores
 from unittest.mock import patch, MagicMock
 
@@ -41,3 +42,18 @@ def test_lambda_handler_succees(mock_count_stores, monkeypatch):
 
     assert response["statusCode"] == 200
     assert body["number_stores"] == 2
+
+
+@patch("lambda_function.count_number_of_stores")
+def test_lambda_handler_failure(mock_count_stores, monkeypatch):
+    monkeypatch.setenv("BUCKET_NAME", "some-bucket")
+    monkeypatch.setenv("STORE_CSV_KEY", "some_object.csv")
+    mock_count_stores.side_effect = Exception("some error raised")
+
+
+    response = lambda_handler({}, {})
+    assert response["statusCode"] == 500
+
+    body = json.loads(response["body"])
+    assert body["message"] == "some error raised"
+
