@@ -20,13 +20,16 @@ def count_number_of_stores(bucket_name, object_key):
 
 def lambda_handler(event, context):
     bucket_name = os.getenv("BUCKET_NAME")
-    object_name = os.getenv("STORE_CSV_OBJECT_KEY")
+    object_key = os.getenv("STORE_CSV_OBJECT_KEY")
     
-    if not bucket_name or not object_name:
+    if not bucket_name or not object_key:
         return {
             "statusCode": 500,
             "body": json.dumps({"message": "missing env variables: BUCKET_NAME or TORE_CSV_OBJECT_KEY"})
         }
-    count_number_of_stores(bucket_name, object_name)
-
-lambda_handler({}, {})
+    
+    count = count_number_of_stores(bucket_name, object_key)
+    return {
+        "statusCode": 200,
+        "body": json.dumps({"number_stores": count})
+    }

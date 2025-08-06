@@ -28,3 +28,16 @@ def test_count_number_of_stores(mock_boto3_client):
 
     count = count_number_of_stores("fake-bucket", "fake-key.csv")
     assert count == 3
+
+
+@patch("lambda_function.count_number_of_stores")
+def test_lambda_handler_succees(mock_count_stores, monkeypatch):
+    monkeypatch.setenv("BUCKET_NAME", "some-bucket")
+    monkeypatch.setenv("STORE_CSV_KEY", "some_object.csv")
+    mock_count_stores.return_value = 2
+
+    response = lambda_handler({}, {})
+    body = json.loads(response["body"])
+
+    assert response["statusCode"] == 200
+    assert body["number_stores"] == 2
