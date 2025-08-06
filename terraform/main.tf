@@ -58,7 +58,7 @@ resource "aws_s3_bucket" "multinational_retail_bucket" {
 }
 
 
-#lambda
+#lambda + API Gateway
 
 ## Iam role
 # refactor to use json file
@@ -116,4 +116,11 @@ resource "aws_lambda_function" "get_number_of_stores" {
   Owner   = "Mostafa"
 }
 
+}
+
+
+# API Gateway rest API
+resource "aws_api_gateway_rest_api" "store_api" {
+  name = "store-api"
+  description = "API for interacting with store data"
 }
