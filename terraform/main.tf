@@ -89,3 +89,31 @@ resource "aws_iam_role_policy_attachment" "lambda_s3_read_access" {
   role = aws_iam_role.lambda_exec_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
 }
+
+
+## lambda resource
+resource "aws_lambda_function" "get_number_of_stores" {
+  function_name = "get_number_of_stores"
+  role = aws_iam_role.lambda_exec_role.arn
+  handler = "lambda_function.lambda_handler"
+  runtime = "python3.12"
+  timeout = 30
+
+  filename = "${path.module}/../lambda/get_number_of_stores/get_number_of_stores.zip"
+  source_code_hash = filebase64sha256(
+    "${path.module}/../lambda/get_number_of_stores/get_number_of_stores.zip"
+  )
+
+  environment {
+    variables = {
+      BUCKET_NAME = var.s3_bucket_name
+      STORE_CSV_OBJECT_KEY = var.store_csv_object_key
+    }
+  }
+
+  tags = {
+  Project = "multinational-retail"
+  Owner   = "Mostafa"
+}
+
+}

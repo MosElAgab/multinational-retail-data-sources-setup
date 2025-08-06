@@ -40,3 +40,8 @@ variable "s3_bucket_name" {
     type = string
     description = "name of s3 bucket for storing project data on aws"
 }
+
+variable "store_csv_object_key" {
+  type = string
+  description = "name of store csv file object stored in the s3"
+}
