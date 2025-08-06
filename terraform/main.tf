@@ -119,8 +119,15 @@ resource "aws_lambda_function" "get_number_of_stores" {
 }
 
 
-# API Gateway rest API
+## API Gateway rest API
 resource "aws_api_gateway_rest_api" "store_api" {
   name = "store-api"
   description = "API for interacting with store data"
+}
+
+## create /get_number_of_stores api resource
+resource "aws_api_gateway_resource" "number_of_stores" {
+  rest_api_id = aws_api_gateway_rest_api.store_api.id
+  parent_id = aws_api_gateway_rest_api.store_api.root_resource_id
+  path_part = "number_of_stores"
 }

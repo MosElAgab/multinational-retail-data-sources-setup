@@ -8,6 +8,7 @@ multinational-retail-data-sources
 <!-- explicitly set RDS to default vpc; can be done by linking security group to default vpc; check docs -->
 <!-- define password validation for variables.tf/db_password to enhance security -->
 <!-- for prodcution, consider using TF_VAR_db_password or AWS secret manager -->
+<!-- untrack dotenv in lambda function from git version control -->
 
 # commands work flow
 make terraform-apply -> python upload_user_data.py gives {RDS_HOSt}-> python upload_card_details_data.py gives {url} -> python upload_store_data.py
