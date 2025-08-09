@@ -45,3 +45,6 @@ terraform-format:
 
 # zip sepecific file
 # zip -r9 get_number_of_stores.zip lambda_function.py
+
+# test api
+# curl -i -H "X-API-KEY: [x-api-key]" [number_of_stores_url]
