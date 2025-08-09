@@ -11,7 +11,7 @@ multinational-retail-data-sources
 <!-- untrack dotenv in lambda function from git version control -->
 
 # commands work flow
-make terraform-apply -> python upload_user_data.py gives {RDS_HOSt}-> python upload_card_details_data.py gives {url} -> python upload_store_data.py
+define variables in .tfvars and .env -> run tests -> zip_lambda functions -> make terraform-apply gives {RDS_HOSt}-> python upload_user_data.py -> python upload_card_details_data.py gives {url} -> python upload_store_data.py ->
 
 # summary of work done
 - Makefile for terraform commands

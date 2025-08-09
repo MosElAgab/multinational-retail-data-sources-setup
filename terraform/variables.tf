@@ -10,6 +10,11 @@ variable "aws_profile" {
   default     = "default"
 }
 
+variable "stage" {
+  type = string
+  description = "stage name e.g, dev or prod"
+}
+
 variable "db_username" {
   description = "Username for the RDS PostgreSQL instance"
   type        = string

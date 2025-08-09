@@ -123,6 +123,7 @@ resource "aws_lambda_function" "get_number_of_stores" {
 resource "aws_api_gateway_rest_api" "store_api" {
   name = "store-api"
   description = "API for interacting with store data"
+  endpoint_configuration { types = ["REGIONAL"] }
 }
 
 ## create /number_of_stores api resource
@@ -139,13 +140,6 @@ resource "aws_api_gateway_method" "get_number_of_stores" {
   http_method = "GET"
   authorization = "NONE"
   api_key_required = true
-}
-
-## create api key
-resource "aws_api_gateway_api_key" "store_api_key" {
-  name = var.store_api_key_name
-  value = var.store_api_key_value
-  enabled = true
 }
 
 ## intergrate api with lambda
@@ -166,4 +160,52 @@ resource "aws_lambda_permission" "allow_api_gateway_invoke" {
   function_name = aws_lambda_function.get_number_of_stores.function_name
   principal = "apigateway.amazonaws.com"
   source_arn = "${aws_api_gateway_rest_api.store_api.execution_arn}/*/*"
+}
+
+
+resource "aws_api_gateway_deployment" "store_api_deployment" {
+  depends_on = [
+    aws_api_gateway_integration.lambda_integration
+  ]
+  rest_api_id = aws_api_gateway_rest_api.store_api.id
+  triggers = {
+    redeployment = sha1(jsonencode({
+      resources    = [aws_api_gateway_resource.number_of_stores.id]
+      methods      = [aws_api_gateway_method.get_number_of_stores.id]
+      integrations = [aws_api_gateway_integration.lambda_integration.id]
+    }))
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_api_gateway_stage" "store_api_stage" {
+  stage_name    = var.stage
+  rest_api_id   = aws_api_gateway_rest_api.store_api.id
+  deployment_id = aws_api_gateway_deployment.store_api_deployment.id
+}
+
+
+## create api key
+resource "aws_api_gateway_api_key" "store_api_key" {
+  name = var.store_api_key_name
+  value = var.store_api_key_value
+  enabled = true
+}
+
+resource "aws_api_gateway_usage_plan" "store_plan" {
+  name = "store-api-plan"
+
+  api_stages {
+    api_id = aws_api_gateway_rest_api.store_api.id
+    stage  = aws_api_gateway_stage.store_api_stage.stage_name
+  }
+}
+
+resource "aws_api_gateway_usage_plan_key" "store_plan_key" {
+  key_id        = aws_api_gateway_api_key.store_api_key.id
+  key_type      = "API_KEY"
+  usage_plan_id = aws_api_gateway_usage_plan.store_plan.id
 }
