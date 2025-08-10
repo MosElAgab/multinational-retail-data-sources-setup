@@ -205,3 +205,13 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+# get _number_of_stores lambda function
+# Installed dependencies (vendored for local testing, not source-controlled)
+lambda/get_number_of_stores/*.dist-info/
+lambda/get_number_of_stores/*/
+!lambda/get_number_of_stores/lambda_function.py
+!lambda/get_number_of_stores/test_lambda_function.py
+!lambda/get_number_of_stores/requirements.txt
+lambda/get_number_of_stores/*.zip
