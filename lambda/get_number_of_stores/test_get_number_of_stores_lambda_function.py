@@ -1,5 +1,5 @@
 import json
-from lambda_function import lambda_handler, count_number_of_stores
+from get_number_of_stores.lambda_function import lambda_handler, count_number_of_stores
 from unittest.mock import patch, MagicMock
 
 def test_lambda_handler_missing_env(monkeypatch):
@@ -16,7 +16,7 @@ def test_lambda_handler_missing_env(monkeypatch):
     assert "missing env" in body["message"]
 
 
-@patch("lambda_function.boto3.client")
+@patch("get_number_of_stores.lambda_function.boto3.client")
 def test_count_number_of_stores(mock_boto3_client):
     mock_csv = "id,store_name\n1,Store A\n2,Store B\n3, Store b"
     mock_response = {
@@ -30,7 +30,7 @@ def test_count_number_of_stores(mock_boto3_client):
     assert count == 3
 
 
-@patch("lambda_function.count_number_of_stores")
+@patch("get_number_of_stores.lambda_function.count_number_of_stores")
 def test_lambda_handler_succees(mock_count_stores, monkeypatch):
     monkeypatch.setenv("BUCKET_NAME", "some-bucket")
     monkeypatch.setenv("STORE_CSV_KEY", "some_object.csv")
@@ -43,7 +43,7 @@ def test_lambda_handler_succees(mock_count_stores, monkeypatch):
     assert body["number_stores"] == 2
 
 
-@patch("lambda_function.count_number_of_stores")
+@patch("get_number_of_stores.lambda_function.count_number_of_stores")
 def test_lambda_handler_failure(mock_count_stores, monkeypatch):
     monkeypatch.setenv("BUCKET_NAME", "some-bucket")
     monkeypatch.setenv("STORE_CSV_KEY", "some_object.csv")
