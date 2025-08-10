@@ -22,6 +22,9 @@ def get_store_by_row_index(bucket_name, object_key, index):
 
     return data[index]
 
+# TODO: Handle lambda failure
+# TODO: Remove the empty key "" from the API JSON response.
+# TODO: CSV file loaded entirely in-memory, consider another efficent option
 def lambda_handler(event, context):
     bucket_name = os.getenv("BUCKET_NAME")
     object_key = os.getenv("STORE_CSV_OBJECT_KEY")
