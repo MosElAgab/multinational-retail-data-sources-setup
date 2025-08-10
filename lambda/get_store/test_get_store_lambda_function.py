@@ -38,3 +38,22 @@ def test_get_store_by_row_index(mock_get_store_data):
     ]
     store_by_row_index = get_store_by_row_index("fake-bucket", "fake-key.csv", 1)
     assert store_by_row_index["store_name"] == "Store B"
+
+
+@patch("get_store.lambda_function.get_store_data")
+def test_lambda_handler_success(mock_get_store_data):
+    mock_get_store_data.return_value = [
+        {"store_name": "Store A"},
+        {"store_name": "Store B"},
+        {"store_name": "Store C"}
+    ]
+    event = {
+        "pathParameters": {
+            "index": 2
+        }
+    }
+    response = lambda_handler(event, {})
+    assert response["statusCode"] == 200
+
+    body = json.loads(response["body"])
+    assert body["store_name"] == "Store C"

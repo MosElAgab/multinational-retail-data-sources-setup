@@ -32,4 +32,19 @@ def lambda_handler(event, context):
             "body": json.dumps({"message": "missing env variables: BUCKET_NAME or STORE_CSV_OBJECT_KEY"})
         }
     
+    path_params = event.get("pathParameters")
+    row_index = path_params.get("index")
+    store = get_store_by_row_index(bucket_name, object_key, row_index)
+    return {
+            "statusCode": 200,
+            "body": json.dumps(store)
+        }
 
+event = {
+        "pathParameters": {
+            "index": 2
+        }
+    }
+
+response = lambda_handler(event, {})
+print(response)
