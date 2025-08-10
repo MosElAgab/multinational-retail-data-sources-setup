@@ -17,6 +17,10 @@ def get_store_data(bucket_name, object_key):
     data = list(csv_reader)
     return data
 
+def get_store_by_row_index(bucket_name, object_key, index):
+    data = get_store_data(bucket_name, object_key)
+
+    return data[index]
 
 def lambda_handler(event, context):
     bucket_name = os.getenv("BUCKET_NAME")
@@ -25,5 +29,7 @@ def lambda_handler(event, context):
     if not bucket_name or not object_key:
         return {
             "statusCode": 500,
-            "body": json.dumps({"message": "missing env variables: BUCKET_NAME or TORE_CSV_OBJECT_KEY"})
+            "body": json.dumps({"message": "missing env variables: BUCKET_NAME or STORE_CSV_OBJECT_KEY"})
         }
+    
+

@@ -25,7 +25,7 @@ def lambda_handler(event, context):
     if not bucket_name or not object_key:
         return {
             "statusCode": 500,
-            "body": json.dumps({"message": "missing env variables: BUCKET_NAME or TORE_CSV_OBJECT_KEY"})
+            "body": json.dumps({"message": "missing env variables: BUCKET_NAME or STORE_CSV_OBJECT_KEY"})
         }
     
     try:

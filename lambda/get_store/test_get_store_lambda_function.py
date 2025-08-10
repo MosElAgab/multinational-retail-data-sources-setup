@@ -1,5 +1,5 @@
 import json
-from get_store.lambda_function import lambda_handler, get_store_data
+from get_store.lambda_function import lambda_handler, get_store_data, get_store_by_row_index
 from unittest.mock import patch, MagicMock
 
 def test_lambda_handler_missing_env(monkeypatch):
@@ -28,3 +28,13 @@ def test_get_store_data(mock_boto3_client):
     
     data = get_store_data("fake-bucket", "fake-key.csv")
     assert isinstance(data, list)
+
+@patch("get_store.lambda_function.get_store_data")
+def test_get_store_by_row_index(mock_get_store_data):
+    mock_get_store_data.return_value = [
+        {"store_name": "Store A"},
+        {"store_name": "Store B"},
+        {"store_name": "Store C"}
+    ]
+    store_by_row_index = get_store_by_row_index("fake-bucket", "fake-key.csv", 1)
+    assert store_by_row_index["store_name"] == "Store B"
