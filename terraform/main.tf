@@ -168,6 +168,7 @@ resource "aws_api_gateway_deployment" "store_api_deployment" {
     aws_api_gateway_integration.lambda_integration
   ]
   rest_api_id = aws_api_gateway_rest_api.store_api.id
+  #trigger to enforce deployment after changes to resources/methods/integrations
   triggers = {
     redeployment = sha1(jsonencode({
       resources    = [aws_api_gateway_resource.number_of_stores.id]
@@ -175,7 +176,7 @@ resource "aws_api_gateway_deployment" "store_api_deployment" {
       integrations = [aws_api_gateway_integration.lambda_integration.id]
     }))
   }
-
+  # create first and replace existing one (reduces down time)
   lifecycle {
     create_before_destroy = true
   }
